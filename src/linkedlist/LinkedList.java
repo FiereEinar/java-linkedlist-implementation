@@ -68,6 +68,10 @@ public class LinkedList {
 			this.head = new Node(data);
 			this.head.next = prev;
 			
+			if (this.length == 1) {
+				this.tail = null;
+			}
+			
 			this.length++;
 			return true;
 		}
@@ -85,8 +89,107 @@ public class LinkedList {
 		current = current.next;
 		current.next = prev;
 		
+		if (index == this.length + 1) {
+			this.tail = current;
+		}
+		
 		this.length++;
 		
 		return true;
+	}
+	
+	public void popBack() {
+		if (this.head == null) return;
+		
+		Node current = this.head;
+		
+		if (this.length == 1) {
+			this.head = null;
+			this.tail = null;
+			this.length--;
+			return;
+		}
+		
+		while (current.next.next != null) {
+			current = current.next;
+		}
+		
+		current.next = null;
+		this.tail = current;
+		
+		this.length--;
+	}
+	
+	public void popFront() {
+		if (this.head == null) return;
+		
+		if (this.head.next == null) {
+			this.head = null;
+			this.length--;
+			return;
+		}
+		
+		this.head = this.head.next;
+		this.length--;
+	}
+	
+	public Boolean deleteAt(int index) {
+		if (index <= 0 || index > this.length) return false;
+		
+		if (index == 1) {
+			this.head = this.head.next;
+			
+			if (this.length == 1) {
+				this.tail = null;
+			}
+			
+			this.length--;
+			return true;
+		}
+		
+		Node current = this.head;
+		int i = 1;
+		
+		while (i != index - 1) {
+			current = current.next;
+			i++;
+		}
+		
+		Node deletedNext = current.next.next;
+		
+		current.next = deletedNext;
+		
+		if (deletedNext == null) {
+			this.tail = current;
+		}
+		
+		this.length--;
+		
+		return true;
+	}
+	
+	public Boolean contains(int data) {
+		Node current = this.head;
+		
+		while (current != null) {
+			if (current.data == data) return true;
+			current = current.next;
+		}
+		
+		return false;
+	}
+	
+	public int find(int data) {
+		Node current = this.head;
+		int i = 1;
+		
+		while (current != null) {
+			if (current.data == data) return i;
+			current = current.next;
+			i++;
+		}
+		
+		return -1;
+		
 	}
 }
